@@ -216,3 +216,16 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Ignorar archivo grande de simulación
+fdtd/data/simulation_data.hdf5
+
+# O ignorar todos los .hdf5
+*.hdf5
+
+# Otros ejemplos comunes
+__pycache__/
+*.pyc
+.env
+node_modules/
+.DS_Store
