@@ -1,0 +1,11 @@
+# Core library (picdesign/)
+numpy>=1.24
+gdsfactory>=7.0
+ 
+# FDTD notebooks (fdtd/)
+tidy3d>=2.7
+gdstk>=0.9
+matplotlib>=3.7
+pandas>=2.0
+typeguard>=4.0
+jupyter>=1.0
