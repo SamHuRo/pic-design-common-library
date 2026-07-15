@@ -1,1 +1,2 @@
 import gdsfactory as gf
+from picdesign.learning_chip.structures.directional_couplers import directional_coupler
