@@ -1,5 +1,4 @@
 from wcwidth import width
-
 import gdsfactory as gf
 
 def directional_coupler_SiN_1550(
@@ -17,6 +16,10 @@ def directional_coupler_SiN_1550(
                 - 'width': Width of the waveguides (float).
                 - 'ratio_coupling': Coupling ratio (str).
                 - 'gap': Gap between the two waveguides (float).
+                - 'type_bend': Type of bend for the waveguides (str).
+                - 'dy_coupler_value': Vertical offset for the coupler (float).
+                - 'dx_coupler_value': Horizontal offset for the coupler (float).
+                - 'wavelength': Center operating wavelength of the directional coupler (float).
 
     Returns:
         A gdsfactory Component representing the directional coupler.
@@ -34,6 +37,7 @@ def directional_coupler_SiN_1550(
     type_bend = params['type_bend']
     dy_coupler_value = params['dy_coupler_value']
     dx_coupler_value = params['dx_coupler_value']
+    wavelength = params['wavelength']
 
     # =============================================================
     #      Create the directional coupler component
@@ -47,35 +51,41 @@ def directional_coupler_SiN_1550(
     usable_width = chip_width - 2 * margin
 
     # Definition 
-    a_por_ratio = {
+    a_ratio = {
         "50:50": 4,
         "0:100": 2,
         "25:75": 7/36,
     }
 
-    for idx, (ratio_coupler_value, gap_coupler_value) in enumerate(zip(ratio_coupling, gap)):
-        # Reference structure
-        structure = gf.Component()
+    # ==================================================================================
+    #    Create the directional coupler structures based on the specified parameters
+    # ==================================================================================
+    # Reference structure
+    structure = gf.Component()
 
-        a = a_por_ratio[ratio_coupler_value]
+    # Definition of the coupling ratio
+    a = a_ratio[ratio_coupling]
 
-        # Definition of the directional coupler
-        dc_component = structure.add_ref(
-            gf.components.directional_coupler(
-                gap=gap_coupler_value, 
-                length=length, 
-                dy=dy_coupler_value,
-                dx=dx_coupler_value,
-                cross_section=gf.cross_section.strip(
-                    width=width, 
-                    layer=(1, 0),
-                    port_names=("o1", "o2")
-                ),
-                allow_min_radius_violation=False,
-                bend=type_bend
-            )
+    # Definition of the directional coupler
+    dc_component = structure.add_ref(
+        gf.components.directional_coupler(
+            gap=gap, 
+            length=length, 
+            dy=dy_coupler_value,
+            dx=dx_coupler_value,
+            cross_section=gf.cross_section.strip(
+                width=width, 
+                layer=(1, 0),
+                port_names=("o1", "o2")
+            ),
+            allow_min_radius_violation=False,
+            bend=type_bend
         )
-        
+    )
+
+    # length of the directional coupler 
+    dc_length = dc_component.size_info().width
+    print(f"Directional coupler length: {dc_length} um")
 
     # Create the two waveguides
     wg1 = gf.components.straight(length=length, width=width)
@@ -91,3 +101,5 @@ def directional_coupler_SiN_1550(
     coupler.add(wg2_ref)
 
     return coupler
+
+
