@@ -3,8 +3,7 @@ from datetime import date
 from structures import spirals, rings, bragg_crystal
 from gdsfactory.generic_tech import get_generic_pdk
 
-# Prueba de cambio de carpeta
-prueba = 1
+
 # Activate PDK
 get_generic_pdk().activate()
 
