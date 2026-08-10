@@ -3,6 +3,7 @@ from datetime import date
 from structures import spirals, rings, bragg_crystal
 from gdsfactory.generic_tech import get_generic_pdk
 
+
 # Activate PDK
 get_generic_pdk().activate()
 
